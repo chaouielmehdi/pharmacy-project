@@ -1,0 +1,32 @@
+
+<div @fade class="main-content">
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-12">
+				<div class="card card-profile">
+					<div class="card-avatar" style=" background-color: aliceblue !important;">
+						<div>
+							<i class="material-icons m-4 text-primary" style="font-size: 70px !important;">person</i>
+						</div>
+					</div>
+					<div class="card-body">
+						<h6 class="card-category text-gray">{{ user.username }}</h6>
+						<h4 class="card-title">{{ user.firstName | titlecase }} {{ user.lastName | titlecase }}</h4>
+						<h5 class="card-title">
+							<span class="mr-2">{{ user.cin }}</span>
+							|
+							<span class="ml-2">{{ user.phone }}</span>
+						</h5>
+						<p class="card-description">
+							{{ user.description }}
+						</p>
+						<a routerLink="/profile/edit" class="btn btn-primary btn-round mt-3">
+							<i class="material-icons mr-1">edit</i>
+							Update Profile
+						</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

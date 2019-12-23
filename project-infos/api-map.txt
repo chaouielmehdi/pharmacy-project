@@ -1,0 +1,12 @@
+users management
+----------------------------------------------------------------------------------------------------------------------------------
+HTTP Verb	| URL									| Action							| Return
+----------------------------------------------------------------------------------------------------------------------------------
+POST		| project-pharmacy/user/create			| creates one user					| void
+
+GET			| project-pharmacy/users				| gets list of users				| users		(or null)
+GET			| project-pharmacy/user?id				| gets one user by id				| user		(or null)
+GET			| project-pharmacy/admin?id				| gets one admin by id				| admin		(or null)
+
+PUT			| project-pharmacy/user/update?id		| update one user by id				| user		(or null)
+DELETE		| project-pharmacy/user/delete?id		| deletes one user by id			| void

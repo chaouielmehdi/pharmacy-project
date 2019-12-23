@@ -1,0 +1,18 @@
+<div class="logo">
+	<a routerLink="/dashboard" class="simple-text">
+		<div class="logo-img">
+			<img src="/assets/img/logo.png"/>
+		</div>
+	</a>
+</div>
+<div class="sidebar-wrapper">
+	<ul class="nav">
+		<li routerLinkActive="active" *ngFor="let menuItem of menuItems" [class]="menuItem.class + 'nav-item'">
+			<a *ngIf="menuItem.isVisible" class="nav-link" [routerLink]="[menuItem.path]">
+				<i [class]="menuItem.iconClass" style="font-size: 23px;">{{ menuItem.icon }}</i>
+				
+				<p>{{ menuItem.title }}</p>
+			</a>
+		</li>
+	</ul>
+</div>

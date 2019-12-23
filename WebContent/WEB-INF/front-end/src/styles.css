@@ -1,0 +1,13 @@
+/* You can add global styles to this file, and also import other style files */
+
+.bg-blue-purple{
+	background: linear-gradient(60deg, rgb(80, 159, 212), #8e24aa) !important;
+}
+
+.pull-right{
+	float: right !important;
+}
+
+.pull-left{
+	float: left !important;
+}

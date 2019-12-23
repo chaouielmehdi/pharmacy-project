@@ -1,0 +1,44 @@
+
+<div @fade class="main-content">
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-12">
+				<div class="card">
+					<div class="card-header card-header-success">
+						<h4 class="card-title">Add Provider</h4>
+					</div>
+					<div class="card-body">
+						<form [formGroup]="providerForm" (ngSubmit)="submitProviderForm()">
+							<div class="row">
+								<div class="col-6">
+									<mat-form-field class="example-full-width" style="margin-top: 10px;">
+										<input formControlName="name" matInput placeholder="Name">
+									</mat-form-field>
+								</div>
+								<div class="col-6">
+									<mat-form-field class="example-full-width" style="margin-top: 10px;">
+										<input formControlName="city" matInput placeholder="City">
+									</mat-form-field>
+								</div>
+								<div class="col-6">
+									<mat-form-field class="example-full-width" style="margin-top: 10px;">
+										<input formControlName="contractDate" type="date" matInput placeholder="Contract Date">
+									</mat-form-field>
+								</div>
+							</div>
+							<div class="clearfix"></div>
+						</form>
+
+						<button mat-raised-button type="submit" class="btn btn-success pull-right" (click)="submitProviderForm()" [disabled]="providerForm.invalid || isProviderFormLoading">
+							<span [hidden]="!isProviderFormLoading" class="spinner-border spinner-border-sm mr-2" role="status" aria-hidden="true"></span>
+							Add Provider
+						</button>
+						<a routerLink="/providers">
+							<button mat-raised-button class="btn btn-default pull-right" style="margin-right: 7px;">Cancel</button>
+						</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

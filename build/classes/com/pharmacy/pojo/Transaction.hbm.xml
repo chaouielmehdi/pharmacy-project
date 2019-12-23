@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="com.pharmacy.pojo.Transaction" table="transactions" catalog="pharmacy" optimistic-lock="version">
+        <id name="id" type="java.lang.Integer">
+            <column name="id" />
+            <generator class="assigned" />
+        </id>
+        <property name="type" type="string">
+            <column name="type" />
+        </property>
+        <property name="date" type="date">
+            <column name="date" />
+        </property>
+        <property name="idMedicine" type="java.lang.Integer">
+            <column name="id_medicine" />
+        </property>
+        <property name="idProvider" type="java.lang.Integer">
+            <column name="id_provider" />
+        </property>
+        <property name="idUser" type="java.lang.Integer">
+            <column name="id_user" />
+        </property>
+        <property name="quantity" type="java.lang.Integer">
+            <column name="quantity" />
+        </property>
+    </class>
+</hibernate-mapping>

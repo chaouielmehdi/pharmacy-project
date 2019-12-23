@@ -1,0 +1,90 @@
+
+<div *ngIf="isPageLoading" class="main-content">
+	<app-loader></app-loader>
+</div>
+
+<div @fade *ngIf="!isUserExist && !isPageLoading" class="main-content">
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-12">
+				<div class="alert alert-danger">
+					<a style="color: antiquewhite; font-weight: 700;" routerLink="dashboard">
+						<i style="color: antiquewhite; margin-bottom: 3px;" class="material-icons">
+							keyboard_arrow_left
+						</i>
+						Dashboard
+					</a>
+					<span style="margin-left: 20px; margin-top: 20px !important">There is no user with such credentials!</span>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div @fade *ngIf="isUserExist && !isPageLoading" class="main-content">
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-12">
+				<div class="card">
+					<div class="card-header card-header-primary">
+						<h4 class="card-title">Update Employee</h4>
+					</div>
+					<div class="card-body">
+						<form [formGroup]="userForm" (ngSubmit)="submitUserForm()">
+							<div class="row">
+								<div class="col-6">
+									<mat-form-field class="example-full-width" style="margin-top: 10px;">
+										<input [value]="user.id" matInput placeholder="ID" disabled>
+									</mat-form-field>
+								</div>
+								<div class="col-6">
+									<mat-form-field class="example-full-width" style="margin-top: 10px;">
+										<input [value]="user.username" matInput placeholder="Username" disabled>
+									</mat-form-field>
+								</div>
+								<div class="col-6">
+									<mat-form-field class="example-full-width" style="margin-top: 10px;">
+										<input formControlName="firstName" matInput placeholder="First Name">
+									</mat-form-field>
+								</div>
+								<div class="col-6">
+									<mat-form-field class="example-full-width" style="margin-top: 10px;">
+										<input formControlName="lastName" matInput placeholder="Last Name">
+									</mat-form-field>
+								</div>
+								<div class="col-6">
+									<mat-form-field class="example-full-width" style="margin-top: 10px;">
+										<input formControlName="cin" matInput placeholder="CIN">
+									</mat-form-field>
+								</div>
+								<div class="col-6">
+									<mat-form-field class="example-full-width" style="margin-top: 10px;">
+										<input formControlName="phone" matInput placeholder="Phone">
+									</mat-form-field>
+								</div>
+								<div class="col-12">
+									<mat-form-field class="example-full-width" style="margin-top: 10px;">
+										<textarea rows="5" formControlName="description" matInput placeholder="Description"></textarea>
+									</mat-form-field>
+								</div>
+							</div>
+							<div class="clearfix"></div>
+						</form>
+
+						<button mat-raised-button type="submit" class="btn btn-primary pull-right" (click)="submitUserForm()" [disabled]="userForm.invalid || isUserFormLoading">
+							<span [hidden]="!isUserFormLoading" class="spinner-border spinner-border-sm mr-2" role="status" aria-hidden="true"></span>
+							Update
+						</button>
+						<button mat-raised-button class="btn btn-danger pull-right" style="margin-right: 7px;" (click)="deleteUser()" [disabled]="isDeleteUserLoading">
+							<span [hidden]="!isDeleteUserLoading" class="spinner-border spinner-border-sm mr-2" role="status" aria-hidden="true"></span>
+							Delete
+						</button>
+						<a routerLink="/users">
+							<button mat-raised-button class="btn btn-default pull-right" style="margin-right: 7px;">Cancel</button>
+						</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

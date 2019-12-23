@@ -1,0 +1,66 @@
+
+<div @fade class="main-content">
+	<div class="container-fluid">
+		
+		<!-- providers table -->
+		<div class="row">
+			<div class="col-12">
+				<div class="card">
+					<div class="card-header card-header-success">
+						<div class="d-flex align-center justify-content-between">
+							<div>
+								<h4 class="card-title">Providers</h4>
+								<p class="card-category">All the providers list</p>
+							</div>
+							<div>
+								<a routerLink="/provider/add">
+									<button mat-raised-button class="btn btn-success float-right box-sh" style="position: relative; font-weight: 700;">
+										<i class="material-icons" style="font-weight: 900;">
+											add
+										</i>
+										Add Provider
+									</button>
+								</a>
+							</div>
+						</div>
+					</div>
+
+					<div *ngIf="isPageLoading" style="min-height: 150px;">
+						<app-loader></app-loader>
+					</div>
+
+					<div *ngIf="!isPageLoading && providers.length==0" class="card-body table-responsive">
+						Empty list!
+					</div>
+
+					<div *ngIf="!isPageLoading && providers.length!=0" class="card-body table-responsive">
+						<table class="table table-hover">
+							<thead class="text-success">
+								<th>ID</th>
+								<th>Name</th>
+								<th>City</th>
+								<th>Contract date</th>
+								<th class="td-actions text-right">Actions</th>
+							</thead>
+							<tbody>
+								<tr *ngFor="let provider of providers">
+									<td>{{ provider.id }}</td>
+									<td>{{ provider.name }}</td>
+									<td>{{ provider.city }}</td>
+									<td>{{ provider.contractDate }}</td>
+									<td class="td-actions text-right">
+										<button (click)="edit(provider.id)" mat-raised-button type="button" matTooltip="Update" [matTooltipPosition]="'above'" class="btn btn-primary btn-link btn-sm btn-just-icon">
+											<i class="material-icons">edit</i>
+										</button>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- end providers table -->
+
+	</div>
+</div>

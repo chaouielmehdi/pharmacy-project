@@ -1,0 +1,68 @@
+
+<div @fade class="main-content">
+	<div class="container-fluid">
+		
+		<!-- users table -->
+		<div class="row">
+			<div class="col-12">
+				<div class="card">
+					<div class="card-header card-header-success">
+						<div class="d-flex align-center justify-content-between">
+							<div>
+								<h4 class="card-title">Employees</h4>
+								<p class="card-category">All the employees list</p>
+							</div>
+							<div>
+								<a routerLink="/user/add">
+									<button mat-raised-button class="btn btn-success float-right box-sh" style="position: relative; font-weight: 700;">
+										<i class="material-icons" style="font-weight: 900;">
+											add
+										</i>
+										Add Employee
+									</button>
+								</a>
+							</div>
+						</div>
+					</div>
+
+					<div *ngIf="isPageLoading" style="min-height: 150px;">
+						<app-loader></app-loader>
+					</div>
+
+					<div *ngIf="!isPageLoading && users.length==0" class="card-body table-responsive">
+						Empty list!
+					</div>
+
+					<div *ngIf="!isPageLoading && users.length!=0" class="card-body table-responsive">
+						<table class="table table-hover">
+							<thead class="text-success">
+								<th>ID</th>
+								<th>Username</th>
+								<th>First Name</th>
+								<th>Last Name</th>
+								<th>CIN</th>
+								<th class="td-actions text-right">Actions</th>
+							</thead>
+							<tbody>
+								<tr *ngFor="let user of users">
+									<td>{{ user.id }}</td>
+									<td>{{ user.username }}</td>
+									<td>{{ user.firstName }}</td>
+									<td>{{ user.lastName }}</td>
+									<td>{{ user.cin }}</td>
+									<td class="td-actions text-right">
+										<button (click)="edit(user.id)" mat-raised-button type="button" matTooltip="Edit" [matTooltipPosition]="'above'" class="btn btn-primary btn-link btn-sm btn-just-icon">
+											<i class="material-icons">edit</i>
+										</button>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- end users table -->
+
+	</div>
+</div>

@@ -1,0 +1,257 @@
+
+<div @fade class="main-content">
+	<div class="container-fluid">
+		
+		<div @fade *ngIf="!isSelling && !isBuying" class="row" style="position: relative;">
+			<div class="col-md-3">
+				<div class="card">
+					<div class="card-header card-header-primary">
+						<div class="d-flex align-center justify-content-between">
+							<div>
+								<h4 class="card-title">Filters</h4>
+								<p class="card-category">Filter medicines by name or status</p>
+							</div>
+						</div>
+					</div>
+					<div class="card-body">
+						<div class="mt-2">
+							<span class="text-success">Name</span>
+						</div>
+						<div class="input-group no-border" style="border: none !important;">
+							<input
+								type="text"
+								class="form-control"
+								placeholder="Search..."  
+								[(ngModel)]="searchInputValue"
+								(ngModelChange)="filterByName()"
+							>
+						</div>
+						<div class="mt-4">
+							<span class="text-success">Status</span>
+						</div>
+						<div class="tab-content">
+							<div class="tab-pane active" id="profile">
+								<table class="table">
+									<tbody>
+										<tr>
+											<td>
+												<div class="form-check">
+													<label class="form-check-label">
+														<input class="form-check-input" type="checkbox" [(ngModel)]="isStatusChecked[0]" (change)="filterByStatus()">
+														<span class="form-check-sign">
+															<span class="check"></span>
+														</span>
+													</label>
+												</div>
+											</td>
+											<td>
+												<div class="alert alert-danger text-center p-1 m-0 mb-1">
+													<p style="font-weight: 500;" class="m-0">Quantity < 10 items</p>
+												</div>
+											</td>
+										</tr>
+										<tr>
+											<td>
+												<div class="form-check">
+													<label class="form-check-label">
+														<input class="form-check-input" type="checkbox" [(ngModel)]="isStatusChecked[1]" (change)="filterByStatus()">
+														<span class="form-check-sign">
+															<span class="check"></span>
+														</span>
+													</label>
+												</div>
+											</td>
+											<td>
+												<div class="alert alert-warning text-center p-1 m-0 mb-1">
+													<p style="font-weight: 500;" class="m-0">Exp. Date < 30 days</p>
+												</div>
+											</td>
+										</tr>
+										<tr>
+											<td>
+												<div class="form-check">
+													<label class="form-check-label">
+														<input class="form-check-input" type="checkbox" [(ngModel)]="isStatusChecked[2]" (change)="filterByStatus()">
+														<span class="form-check-sign">
+															<span class="check"></span>
+														</span>
+													</label>
+												</div>
+											</td>
+											<td>
+												<div class="alert alert-success text-center p-1 m-0 mb-1">
+													<p style="font-weight: 500;" class="m-0">Good</p>
+												</div>
+											</td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="col-md-9">
+				<!-- Medicines -->
+				<div class="card">
+					<div class="card-header card-header-success">
+						<div class="d-flex align-center justify-content-between">
+							<div>
+								<h4 class="card-title">Medicines</h4>
+								<p class="card-category">All the medicines list</p>
+							</div>
+						</div>
+					</div>
+
+					<div class="card-body table-responsive">
+						<button mat-raised-button class="btn btn-success pull-right" (click)="buy()" [disabled]="isDisabledBuying" style="width: 100px;">
+							Buy
+						</button>
+						<button mat-raised-button class="btn btn-primary pull-right" (click)="sell()" [disabled]="isDisabledSelling" style="width: 100px; margin-right: 7px;">
+							Sell
+						</button>
+					</div>
+
+					<div *ngIf="isPageLoading" style="min-height: 150px;">
+						<app-loader></app-loader>
+					</div>
+
+					<div *ngIf="!isPageLoading && filteredMedicines.length==0" class="card-body table-responsive">
+						Empty list!
+					</div>
+					
+					<div *ngIf="!isPageLoading && filteredMedicines.length!=0" class="card-body table-responsive" style="padding-top: 0px !important;">
+						
+						<table class="table table-hover">
+							<thead class="text-success">
+								<th>ID</th>
+								<th>Name</th>
+								<th>Expiration Date</th>
+								<th>Unit Price</th>
+								<th>Quantity</th>
+								<th>Status</th>
+								<th class="td-actions text-right">Actions</th>
+								
+							</thead>
+							<tbody>
+								<tr *ngFor="let medicine of filteredMedicines">
+									<td>
+										<div class="form-check">
+											<label class="form-check-label">
+												<input class="form-check-input" type="checkbox" (change)="selectMedicine($event, medicine.id)">
+												<span class="form-check-sign">
+													<span class="check"></span>
+												</span>
+											</label>
+										</div>
+									</td>
+									<td>{{ medicine.name }}</td>
+									<td>{{ medicine.expirationDate }}</td>
+									<td>{{ medicine.unitPrice }}</td>
+									<td>{{ medicine.quantity }}</td>
+									<td class="td-actions text-right">
+										<div *ngIf="medicine.quantity < 10" class="alert alert-danger text-center p-1 m-0 mb-1">
+											<p style="font-weight: 500;" class="m-0">-</p>
+										</div>
+
+										<div *ngIf="medicine.expirationDate | nearExpirationDate" class="alert alert-warning text-center p-1 m-0 mb-1">
+											<p style="font-weight: 500;" class="m-0">-</p>
+										</div>
+
+										<div *ngIf="!(medicine.quantity < 10 || (medicine.expirationDate | nearExpirationDate))" class="alert alert-success text-center p-1 m-0 mb-1">
+											<p style="font-weight: 500;" class="m-0">-</p>
+										</div>
+									</td>
+									<td class="td-actions text-right">
+										<button (click)="edit(medicine.id)" mat-raised-button type="button" matTooltip="Update" [matTooltipPosition]="'above'" class="btn btn-primary btn-link btn-sm btn-just-icon">
+											<i class="material-icons">edit</i>
+										</button>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+				<!-- Medicines -->
+			</div>
+		</div>
+		
+		<!-- Buy -->
+		<div @fade *ngIf="isBuying" style="position: relative;" class="row">
+			<div class="col-md-12">
+				<div class="card">
+					<div class="card-header card-header-success">
+						<div class="d-flex align-center justify-content-between">
+							<div>
+								<h4 class="card-title">Medicines</h4>
+								<p class="card-category">List of medicines to buy</p>
+							</div>
+						</div>
+					</div>
+					<div class="card-body table-responsive" style="padding-top: 0px !important;">
+						
+						<table class="table table-hover">
+							<thead class="text-success">
+								<th>ID</th>
+								<th>Name</th>
+								<th>Expiration Date</th>
+								<th>Unit Price</th>
+								<th>Quantity</th>
+								<th class="td-actions text-right" style="width: 120px;">Total</th>
+							</thead>
+							<tbody>
+								<tr *ngFor="let element of selectedMedicines; let i = index ">
+									<td *ngIf="element.isSelected">{{ element.medicine.id }}</td>
+									<td *ngIf="element.isSelected">{{ element.medicine.name }}</td>
+									<td *ngIf="element.isSelected">{{ element.medicine.expirationDate }}</td>
+									<td *ngIf="element.isSelected">{{ element.medicine.unitPrice }}</td>
+									<td *ngIf="element.isSelected">
+										<mat-form-field class="p-0">
+											<input
+												min="1"
+												type="number"
+												matInput
+												placeholder="Quantity"
+												[(ngModel)]="quantities[i]"
+												(ngModelChange)="quantityChanged(i, element.medicine.quantity)"
+											>
+										</mat-form-field>
+										<mat-error *ngIf="quantities[i] <= 0" style="font-weight: 500;">Quantity not valid</mat-error>
+
+									</td>
+									<td
+										*ngIf="element.isSelected"
+										class="td-actions text-right"
+									>
+										<!-- filled by JS -->
+										<span>{{ totals[i] }} MAD</span>
+									</td>
+								</tr>
+
+								<tr class="mt-5">
+									<th colspan="4"></th>
+									<th class="td-actions text-right" style="width: 120px;">Total :</th>
+									<td
+										class="td-actions text-right"
+									>
+										<!-- filled by JS -->
+										<span style="font-weight: bold;">{{ totalPrice }} MAD</span>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+					<div class="card-body table-responsive">
+						<button mat-raised-button class="btn btn-success pull-right" [disabled]="isMakeABuyDisabled || isBuyLoading" (click)="makeABuy()" style="width: 100px;">
+							<span [hidden]="!isBuyLoading" class="spinner-border spinner-border-sm mr-2" role="status" aria-hidden="true"></span>
+							Buy
+						</button>
+						<button mat-raised-button class="btn btn-default pull-right" (click)="reinitialize()" style="width: 100px; margin-right: 7px;">
+							Cancel
+						</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

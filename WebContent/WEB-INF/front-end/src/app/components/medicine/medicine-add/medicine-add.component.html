@@ -1,0 +1,64 @@
+
+<div @fade class="main-content">
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-12">
+				<div class="card">
+					<div class="card-header card-header-success">
+						<h4 class="card-title">Add Employee</h4>
+					</div>
+					<div class="card-body">
+						<form [formGroup]="medicineForm" (ngSubmit)="submitMedicineForm()">
+							<div class="row">
+								<div class="col-6">
+									<mat-form-field class="example-full-width" style="margin-top: 10px;">
+										<input formControlName="medicinename" matInput placeholder="Medicinename">
+									</mat-form-field>
+								</div>
+								<div class="col-6">
+									<mat-form-field class="example-full-width" style="margin-top: 10px;">
+										<input formControlName="password" type="password" matInput placeholder="Password">
+									</mat-form-field>
+								</div>
+								<div class="col-6">
+									<mat-form-field class="example-full-width" style="margin-top: 10px;">
+										<input formControlName="firstName" matInput placeholder="First Name">
+									</mat-form-field>
+								</div>
+								<div class="col-6">
+									<mat-form-field class="example-full-width" style="margin-top: 10px;">
+										<input formControlName="lastName" matInput placeholder="Last Name">
+									</mat-form-field>
+								</div>
+								<div class="col-6">
+									<mat-form-field class="example-full-width" style="margin-top: 10px;">
+										<input formControlName="cin" matInput placeholder="CIN">
+									</mat-form-field>
+								</div>
+								<div class="col-6">
+									<mat-form-field class="example-full-width" style="margin-top: 10px;">
+										<input formControlName="phone" matInput placeholder="Phone">
+									</mat-form-field>
+								</div>
+								<div class="col-12">
+									<mat-form-field class="example-full-width" style="margin-top: 10px;">
+										<textarea formControlName="description" matInput placeholder="Description"></textarea>
+									</mat-form-field>
+								</div>
+							</div>
+							<div class="clearfix"></div>
+						</form>
+
+						<button mat-raised-button type="submit" class="btn btn-success pull-right" (click)="submitMedicineForm()" [disabled]="medicineForm.invalid || isMedicineFormLoading">
+							<span [hidden]="!isMedicineFormLoading" class="spinner-border spinner-border-sm mr-2" role="status" aria-hidden="true"></span>
+							Add Employee
+						</button>
+						<a routerLink="/medicines">
+							<button mat-raised-button class="btn btn-default pull-right" style="margin-right: 7px;">Cancel</button>
+						</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

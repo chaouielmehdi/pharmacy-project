@@ -31,6 +31,7 @@ public class DAOTransaction implements DAOTransactionInterface {
 			exceptionObj.printStackTrace();
 		} finally {
 			transanction.commit();
+			session.close();
 		}
 	}
 	

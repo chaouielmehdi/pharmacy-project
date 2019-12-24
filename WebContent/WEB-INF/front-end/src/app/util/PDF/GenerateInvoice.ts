@@ -12,7 +12,7 @@ import { Medicine } from "app/classes/Medicine";
  * @param transactions
  */
 
-export function generateInvoice( medicines: Medicine[], total: number, user: User) {
+export function generateInvoice( medicines: Medicine[], total: number, user: User, invoiceName: string) {
 	// reset values
 	resetDocProperties();
 
@@ -49,7 +49,7 @@ export function generateInvoice( medicines: Medicine[], total: number, user: Use
 	let oldX = x;
 	marginTop(10);
 	marginLeft(65);
-	setText('fullWidth', 'd-inline', 'h1', 'black', 'bold', 'Purchase invoice');
+	setText('fullWidth', 'd-inline', 'h1', 'black', 'bold', invoiceName);
 	x = oldX
 
 

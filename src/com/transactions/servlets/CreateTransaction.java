@@ -30,15 +30,13 @@ public class CreateTransaction extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// initialize transaction
 		List<Transaction> transactions = RequestHandler.getTransactions(request);
-		
-	
+
 		// validate parameter
 		if(transactions != null && !transactions.isEmpty()) {
 			for (Transaction transaction : transactions) {
 				
 				// save transaction
 				daoTransaction.save(transaction);
-				
 				
 				// update quantity in medicines table
 				Medicine medicine = daoMedicine.getOneById(transaction.getIdMedicine());

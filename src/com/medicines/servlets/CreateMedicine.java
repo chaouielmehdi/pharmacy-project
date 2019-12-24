@@ -27,6 +27,8 @@ public class CreateMedicine extends HttpServlet {
 		// initialize medicine
 		Medicine medicine = RequestHandler.getMedicine(request);
 		
+		System.out.println(medicine);
+		
 		// validate parameter
 		if(daoMedicine.getOneByName(medicine.getName()) != null) {
 	        // return the Json result (not a valid medicine)

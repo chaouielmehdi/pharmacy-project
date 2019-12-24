@@ -133,7 +133,6 @@ public class DAOMedicine implements DAOMedicineInterface {
 				session.update(medicine);
 			}
 			
-			
 		} catch (Exception exceptionObj) {
 			exceptionObj.printStackTrace();
 		} finally {

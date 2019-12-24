@@ -1,69 +1,91 @@
-
 <div @fade class="main-content">
 	<div class="container-fluid">
 		<div class="row">
-			<!-- <div class="col-lg-4 col-md-6 col-sm-12 mt-3">
-				<a routerLink="/medicines">
-					<button mat-raised-button class="btn btn-danger" style="width: 100% !important; height: 130px; font-size: 14px;">
-						<i class="fas fa-capsules mb-2 mt-1" style="font-size: 55px !important;"></i>
-						<br>
-						Medicines Management
-					</button>
-				</a>
+			<div class="col-lg-4 col-md-6 col-sm-6">
+				<div class="card card-stats">
+					<div class="card-header card-header-success card-header-icon">
+						<div class="card-icon">
+							<i class="fas fa-handshake"></i>
+						</div>
+						<p class="card-category">Providers</p>
+						<h3 class="card-title">3</h3>
+					</div>
+					<div class="card-footer">
+						<div class="stats" style="height: 20px;">
+							<a routerLink="/providers" style="position: absolute; right: 17px;">Show more</a>
+						</div>
+					</div>
+				</div>
 			</div>
-			<div class="col-lg-4 col-md-6 col-sm-12 mt-3">
-				<a routerLink="//medicines/sell">
-					<button mat-raised-button class="btn btn-success" style="width: 100% !important; height: 130px; font-size: 14px;">
-						<i class="material-icons mb-2 mt-1" style="font-size: 55px !important;">
-							transit_enterexit
-						</i>
-						<br>
-						Sell Medicine
-					</button>
-				</a>
+			<div class="col-lg-4 col-md-6 col-sm-6">
+				<div class="card card-stats">
+					<div class="card-header card-header-warning card-header-icon">
+						<div class="card-icon">
+							<i class="material-icons">store</i>
+						</div>
+						<p class="card-category">Revenue (MAD)</p>
+						<h3 class="card-title">3200</h3>
+					</div>
+					<div class="card-footer">
+						<div class="stats" style="height: 20px;">
+							<i class="material-icons">date_range</i> Last 24 Hours
+							<a routerLink="/providers" style="position: absolute; right: 17px;">Generate report</a>
+						</div>
+					</div>
+				</div>
 			</div>
-			<div class="col-lg-4 col-md-6 col-sm-12 mt-3">
-				<a routerLink="/medicines/buy">
-					<button mat-raised-button class="btn btn-primary" style="width: 100% !important; height: 130px; font-size: 14px;">
-						<i class="material-icons mb-2 mt-1" style="font-size: 55px !important; transform: rotate(180deg);">
-							transit_enterexit
-						</i>
-						<br>
-						Buy Medicine
-					</button>
-				</a>
+			<div class="col-lg-4 col-md-6 col-sm-6">
+				<div class="card card-stats">
+					<div class="card-header card-header-primary card-header-icon">
+						<div class="card-icon">
+							<i class="material-icons">info_outline</i>
+						</div>
+						<p class="card-category">Employees</p>
+						<h3 class="card-title">20</h3>
+					</div>
+					<div class="card-footer">
+						<div class="stats" style="height: 20px;">
+							<a routerLink="/users" style="position: absolute; right: 17px;">Show more</a>
+						</div>
+					</div>
+				</div>
 			</div>
-			<div class="col-lg-4 col-md-6 col-sm-12 mt-3">
-				<a routerLink="/users">
-					<button mat-raised-button class="btn btn-success" style="width: 100% !important; height: 130px; font-size: 14px;">
-						<i class="material-icons mb-2 mt-1" style="font-size: 55px !important;">
-							people_alt
-						</i>
-						<br>
-						Employees Management
-					</button>
-				</a>
+		</div>
+		<div class="row">
+			<div class="col-md-6">
+				<div class="card card-chart">
+					<div class="card-header card-header-success">
+						<div class="ct-chart" id="dailySalesChart"></div>
+					</div>
+					<div class="card-body">
+						<h4 class="card-title">Daily Sales</h4>
+						<p class="card-category">
+							<span class="text-success"><i class="fa fa-long-arrow-up"></i> 55% </span> increase in today sales.</p>
+					</div>
+					<div class="card-footer">
+						<div class="stats">
+							<i class="material-icons">access_time</i> updated 4 minutes ago
+						</div>
+					</div>
+				</div>
 			</div>
-			<div class="col-lg-4 col-md-6 col-sm-12 mt-3">
-				<a routerLink="/providers">
-					<button mat-raised-button class="btn btn-danger" style="width: 100% !important; height: 130px; font-size: 14px;">
-						<i class="fas fa-handshake mb-2 mt-1" style="font-size: 55px !important;"></i>
-						<br>
-						Providers Management
-					</button>
-				</a>
+			<div class="col-md-6">
+				<div class="card card-chart">
+					<div class="card-header card-header-warning">
+						<div class="ct-chart" id="websiteViewsChart"></div>
+					</div>
+					<div class="card-body">
+						<h4 class="card-title">Email Subscriptions</h4>
+						<p class="card-category">Last Campaign Performance</p>
+					</div>
+					<div class="card-footer">
+						<div class="stats">
+							<i class="material-icons">access_time</i> campaign sent 2 days ago
+						</div>
+					</div>
+				</div>
 			</div>
-			<div class="col-lg-4 col-md-6 col-sm-12 mt-3">
-				<a routerLink="/profile">
-					<button mat-raised-button class="btn btn-primary" style="width: 100% !important; height: 130px; font-size: 14px;">
-						<i class="material-icons mb-2 mt-1" style="font-size: 55px !important;">
-							person
-						</i>
-						<br>
-						Profile Management
-					</button>
-				</a>
-			</div> -->
 		</div>
 	</div>
 </div>
+  

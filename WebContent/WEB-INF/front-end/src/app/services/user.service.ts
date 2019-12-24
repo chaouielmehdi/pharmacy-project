@@ -18,7 +18,7 @@ export class UserService {
 		private router: Router,
 		private _tokenService: TokenService
 	) {
-		// get the connected student
+		// get the connected user
 		this.getAndEmitConnectedUser();
 	}
 
@@ -92,7 +92,7 @@ export class UserService {
 		
 		this.changeAuthStatus$(true);
 
-		// get the connected student
+		// get the connected user
 		this.getAndEmitConnectedUser();
 	}
 

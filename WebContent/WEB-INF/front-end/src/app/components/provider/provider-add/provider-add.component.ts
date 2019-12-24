@@ -61,7 +61,7 @@ export class ProviderAddComponent implements OnInit {
 			),
 			contractDate: new FormControl(
 				// default value
-				formatDate('yyyy-mm-dd', new Date()),
+				formatDate('yyyy-mm-dd', new Date(), 0),
 	
 				// validators
 				[

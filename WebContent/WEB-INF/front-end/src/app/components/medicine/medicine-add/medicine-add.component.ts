@@ -4,6 +4,9 @@ import { NotificationService } from 'app/services/notification.service';
 import { MedicineService } from 'app/services/medicine.service';
 import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
 import { fade } from 'app/animations/fade';
+import { Provider } from 'app/classes/Provider';
+import { ProviderService } from 'app/services/provider.service';
+import { formatDate } from 'app/util/DateHandler';
 
 @Component({
 	selector: 'app-medicine-add',
@@ -17,13 +20,16 @@ export class MedicineAddComponent implements OnInit {
 
 	constructor(
 		private fb: FormBuilder,
+		private router: Router,
 		private _medicineService: MedicineService,
 		private _notificationService: NotificationService,
-		private router: Router,
+		private _providerService: ProviderService,
 	) { }
 
 	ngOnInit() {
 		this.initMedicineForm();
+
+		this.getAllProviders();
 	}
 
 
@@ -39,7 +45,7 @@ export class MedicineAddComponent implements OnInit {
 
 	initMedicineForm() {
 		this.medicineForm = this.fb.group({
-			medicinename: new FormControl(
+			name: new FormControl(
 				// default value
 				'',
 	
@@ -48,16 +54,7 @@ export class MedicineAddComponent implements OnInit {
 					Validators.required
 				]
 			),
-			password: new FormControl(
-				// default value
-				'',
-				
-				// validators
-				[
-					Validators.required
-				]
-			),
-			firstName: new FormControl(
+			expirationDate: new FormControl(
 				// default value
 				'',
 	
@@ -66,7 +63,17 @@ export class MedicineAddComponent implements OnInit {
 					Validators.required
 				]
 			),
-			lastName: new FormControl(
+			unitPrice: new FormControl(
+				// default value
+				'',
+	
+				// validators
+				[
+					Validators.required,
+					Validators.min(1)
+				]
+			),
+			idProvider: new FormControl(
 				// default value
 				'',
 	
@@ -75,27 +82,9 @@ export class MedicineAddComponent implements OnInit {
 					Validators.required
 				]
 			),
-			cin: new FormControl(
+			quantity: new FormControl(
 				// default value
-				'',
-	
-				// validators
-				[
-					Validators.required
-				]
-			),
-			phone: new FormControl(
-				// default value
-				'',
-	
-				// validators
-				[
-					Validators.required
-				]
-			),
-			description: new FormControl(
-				// default value
-				'',
+				0,
 	
 				// validators
 				[
@@ -122,7 +111,7 @@ export class MedicineAddComponent implements OnInit {
 						this.router.navigateByUrl('medicines');
 					}
 					else {
-						this._notificationService.danger('medicinename already exists!');
+						this._notificationService.danger('Medicine already exists!');
 					}
 				},
 				(error) => {
@@ -138,5 +127,37 @@ export class MedicineAddComponent implements OnInit {
 			this._notificationService.danger('Invalid form!');
 		}
 	}
+
+
+
+	/*
+	 * (non-doc)
+	 * --------------------------------------------------------------------------
+	 * providers
+	 * --------------------------------------------------------------------------
+	 */
+	
+	providers: Provider[] = [];
+	
+	getAllProviders(): void {
+		this._providerService.getAll().subscribe(
+			(providers) => {
+				if(providers != null) {
+					this.providers = providers;
+
+					this.providers.forEach((provider) => {
+						provider.contractDate = formatDate('Month dd, yyyy', provider.contractDate);
+					});
+				}
+			},
+			(error) => {
+				this._notificationService.danger('Aïe! an error has occurred');
+				// console.error(error);
+			},
+			() => {
+				this.isPageLoading = false;
+			});
+	}
+
 
 }

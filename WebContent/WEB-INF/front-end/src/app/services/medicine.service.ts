@@ -19,8 +19,6 @@ export class MedicineService {
 		private router: Router,
 		private _tokenService: TokenService
 	) {
-		// get the connected student
-		this.getAndEmitConnectedMedicine();
 	}
 
 
@@ -95,59 +93,6 @@ export class MedicineService {
 	 * GET
 	 * --------------------------------------------------------------------------
 	 */
-
-
-	/**
-	 * Gets and emit connected medicine to the subscribers of this.medicineEventEmitter
-	 */
-	getAndEmitConnectedMedicine(): void {
-		this.getConnected().subscribe(
-			(medicine) => {
-				if(medicine != null) {
-					this.medicine = medicine;
-				}
-				else {
-					// medicine is not there
-					this.medicine = new Medicine();
-				}
-			},
-			(error) => {
-				// medicine is not there
-				this.medicine = new Medicine();
-				
-				// console.log("error : ", error);
-			},
-			() => {
-				this.medicineEventEmitter.emit(this.medicine);
-			});
-	}
-
-
-	/**
-	 * Gets the connected medicine
-	 * @returns medicine$
-	 */
-	getConnected(): Observable<Medicine> {
-		// console.log(`MedicineService => trying to getConnected`);
-
-		if(this._tokenService.isTokenValid()) {
-
-			let id = this._tokenService.get();
-			let url = environment.medicineGetURL + '?id=' + id;
-			
-			return this.http.get<Medicine>(url).pipe(
-				tap((medicine: Medicine) => {
-					// console.log(`MedicineService => got medicine = `, medicine)
-				}),
-				catchError((error) => {
-					// console.log(`MedicineService => error = `, error);
-					return of(null);
-				})
-			);
-		}
-
-		return of(null);
-	}
 
 
 	/**
@@ -279,13 +224,13 @@ export class MedicineService {
 	 * @param form 
 	 * @returns transaction$
 	 */
-	buy(forms: FormGroup[]): Observable<Transaction[]> {
+	makeTransaction(forms: FormGroup[]): Observable<Transaction[]> {
 		let formsValue = forms.filter((form) => {return form != null})
 			.map((form) => { return form.value});
 
 		// console.log(`MedicineService => trying to buy `, formsValue);
 
-		return this.http.post(environment.transactionBuyURL, formsValue).pipe(
+		return this.http.post(environment.transactionCreateURL, formsValue).pipe(
 			tap((transactions: Transaction[]) => {
 				// console.log(`MedicineService => transaction made = `, transactions)
 			}),
@@ -295,8 +240,5 @@ export class MedicineService {
 			})
 		);
 	}
-	
-	sell(){
-		
-	}
+
 }

@@ -4,12 +4,12 @@
 		
 		<div @fade *ngIf="!isSelling && !isBuying" class="row" style="position: relative;">
 			<div class="col-md-3">
-				<div class="card">
+				<div class="card sticky-card">
 					<div class="card-header card-header-primary">
 						<div class="d-flex align-center justify-content-between">
 							<div>
 								<h4 class="card-title">Filters</h4>
-								<p class="card-category">Filter medicines by name or status</p>
+								<p class="card-category">Filter medicines</p>
 							</div>
 						</div>
 					</div>
@@ -99,6 +99,16 @@
 							<div>
 								<h4 class="card-title">Medicines</h4>
 								<p class="card-category">All the medicines list</p>
+							</div>
+							<div>
+								<a routerLink="/medicine/add">
+									<button mat-raised-button class="btn btn-success float-right box-sh" style="position: relative; font-weight: 700;">
+										<i class="material-icons" style="font-weight: 900;">
+											add
+										</i>
+										Add Medicine
+									</button>
+								</a>
 							</div>
 						</div>
 					</div>
@@ -253,5 +263,86 @@
 				</div>
 			</div>
 		</div>
+		<!-- End Buy -->
+
+		<!-- Sell -->
+		<div @fade *ngIf="isSelling" style="position: relative;" class="row">
+			<div class="col-md-12">
+				<div class="card">
+					<div class="card-header card-header-success">
+						<div class="d-flex align-center justify-content-between">
+							<div>
+								<h4 class="card-title">Medicines</h4>
+								<p class="card-category">List of medicines to Sell</p>
+							</div>
+						</div>
+					</div>
+					<div class="card-body table-responsive" style="padding-top: 0px !important;">
+						
+						<table class="table table-hover">
+							<thead class="text-success">
+								<th>ID</th>
+								<th>Name</th>
+								<th>Expiration Date</th>
+								<th>Unit Price</th>
+								<th>Quantity</th>
+								<th class="td-actions text-right" style="width: 120px;">Total</th>
+							</thead>
+							<tbody>
+								<tr *ngFor="let element of selectedMedicines; let i = index ">
+									<td *ngIf="element.isSelected">{{ element.medicine.id }}</td>
+									<td *ngIf="element.isSelected">{{ element.medicine.name }}</td>
+									<td *ngIf="element.isSelected">{{ element.medicine.expirationDate }}</td>
+									<td *ngIf="element.isSelected">{{ element.medicine.unitPrice }}</td>
+									<td *ngIf="element.isSelected">
+										<mat-form-field class="p-0">
+											<input
+												min="1"
+												type="number"
+												matInput
+												placeholder="Quantity"
+												[(ngModel)]="quantities[i]"
+												(ngModelChange)="quantityChanged(i, element.medicine.quantity)"
+											>
+										</mat-form-field>
+										<mat-hint>{{ element.medicine.quantity }} items available</mat-hint>
+										<mat-error *ngIf="quantities[i] <= 0" style="font-weight: 500;">Quantity not valid</mat-error>
+										<mat-error *ngIf="quantities[i] > element.medicine.quantity" style="font-weight: 500;">Insufficient store</mat-error>
+									</td>
+									<td
+										*ngIf="element.isSelected"
+										class="td-actions text-right"
+									>
+										<!-- filled by JS -->
+										<span>{{ totals[i] }} MAD</span>
+									</td>
+								</tr>
+
+								<tr class="mt-5">
+									<th colspan="4"></th>
+									<th class="td-actions text-right" style="width: 120px;">Total :</th>
+									<td
+										class="td-actions text-right"
+									>
+										<!-- filled by JS -->
+										<span style="font-weight: bold;">{{ totalPrice }} MAD</span>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+					<div class="card-body table-responsive">
+						<button mat-raised-button class="btn btn-success pull-right" [disabled]="isMakeASellDisabled || isSellLoading" (click)="makeASell()" style="width: 100px;">
+							<span [hidden]="!isSellLoading" class="spinner-border spinner-border-sm mr-2" role="status" aria-hidden="true"></span>
+							Sell
+						</button>
+						<button mat-raised-button class="btn btn-default pull-right" (click)="reinitialize()" style="width: 100px; margin-right: 7px;">
+							Cancel
+						</button>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- End Sell -->
 	</div>
 </div>

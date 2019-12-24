@@ -38,12 +38,19 @@ export class MedicinesComponent implements OnInit {
 
 		this.reinitialize();
 
+		this.getConnectedUser();
+	}
+
+	getConnectedUser(){
+		// get and emit the connected user
+		this._userService.getAndEmitConnectedUser();
+
 		// Subscription to userEventEmitter
 		this._userService.userEventEmitter.subscribe((user) => {
 			this.user = user;
 		});
 	}
-
+	
 
 
 
@@ -65,14 +72,15 @@ export class MedicinesComponent implements OnInit {
 	isDisabledBuying: boolean = true;
 	isDisabledSelling: boolean = true;
 	isMakeABuyDisabled: boolean = false;
+	isMakeASellDisabled: boolean = false;
 	selectedMedicines: {medicine: Medicine, isSelected: boolean}[] = [];
 	quantities: number[] = [];
 	totals: number[] = [];
 	totalPrice: number = 0;
 
 	isBuyLoading: boolean = false;
+	isSellLoading: boolean = false;
 
-	
 	getAllMedicines(): void {
 		this._medicineService.getAll().subscribe(
 			(medicines) => {
@@ -163,21 +171,19 @@ export class MedicinesComponent implements OnInit {
 
 		// validate quantities <= 0
 		this.isMakeABuyDisabled = false;
+		this.isMakeASellDisabled = false;
+
 		this.quantities.forEach((quantity, index) => {
 			if(this.selectedMedicines[index].isSelected && quantity <= 0){
 				this.isMakeABuyDisabled = true;
+				this.isMakeASellDisabled = true;
+			}
+
+			// in case selling
+			if(this.isSelling && this.quantities[i] > quantityAvailable){
+				this.isMakeASellDisabled = true;
 			}
 		});
-
-		if(this.isSelling){
-			// validate quantity input
-			if(this.quantities[i] > quantityAvailable){
-				// 
-			}
-			else if(this.quantities[i] == null){
-				// 
-			}
-		}
 	}
 
 	buy(){
@@ -190,6 +196,10 @@ export class MedicinesComponent implements OnInit {
 
 		// fill Total Price
 		this.fillTotalPrice();
+		
+		this.selectedMedicines.forEach((element, i) => {
+			this.quantityChanged(i, element.medicine.quantity)
+		});
 	}
 
 	sell(){
@@ -202,6 +212,10 @@ export class MedicinesComponent implements OnInit {
 
 		// fill Total Price
 		this.fillTotalPrice();
+
+		this.selectedMedicines.forEach((element, i) => {
+			this.quantityChanged(i, element.medicine.quantity)
+		});
 	}
 
 	fillTotalPrice(){
@@ -244,6 +258,8 @@ export class MedicinesComponent implements OnInit {
 		this.selectedMedicines.forEach((element) => {
 			element.isSelected = false;
 		});
+
+		this.searchInputValue = '';
 	}
 
 	makeABuy(){
@@ -320,7 +336,7 @@ export class MedicinesComponent implements OnInit {
 		this.isBuyLoading = true;
 
 		// send forms to backend
-		this._medicineService.buy(transactionForms).subscribe(
+		this._medicineService.makeTransaction(transactionForms).subscribe(
 			(transactions) => {
 				if(transactions != null) {
 					this._notificationService.success('The store has been updated!');
@@ -349,7 +365,7 @@ export class MedicinesComponent implements OnInit {
 					});
 
 					// generateInvoice
-					generateInvoice(medicines, this.totalPrice, this.user);
+					generateInvoice(medicines, this.totalPrice, this.user, 'Purchase invoice');
 
 					// reinitialize
 					this.reinitialize();
@@ -371,8 +387,132 @@ export class MedicinesComponent implements OnInit {
 
 
 
-	edit(id: number){
-		this.router.navigateByUrl('medicines/edit/' + id);
+
+	makeASell(){
+		// forms to be sent
+		let transactionForms: FormGroup[] = [];
+
+		// fill forms
+		this.selectedMedicines.forEach((selectedMedicine, index) => {
+			
+			if(selectedMedicine.isSelected){
+				let transactionForm: FormGroup = this.fb.group({
+					type: new FormControl(
+						// default value
+						'sell',
+			
+						// validators
+						[
+							Validators.required
+						]
+					),
+					date: new FormControl(
+						// default value
+						new Date(),
+			
+						// validators
+						[
+							Validators.required
+						]
+					),
+					idMedicine: new FormControl(
+						// default value
+						selectedMedicine.medicine.id,
+			
+						// validators
+						[
+							Validators.required
+						]
+					),
+					idProvider: new FormControl(
+						// default value
+						selectedMedicine.medicine.idProvider,
+			
+						// validators
+						[
+							Validators.required
+						]
+					),
+					idUser: new FormControl(
+						// default value
+						this._tokenService.get(),
+						
+						// validators
+						[
+							Validators.required
+						]
+					),
+					quantity: new FormControl(
+						// default value
+						this.quantities[index],
+						
+						// validators
+						[
+							Validators.required
+						]
+					),
+				});
+
+				// fill the forms table
+				transactionForms[index] = transactionForm;
+			}
+		});
+
+		// turn the button's loader on
+		this.isSellLoading = true;
+
+		// send forms to backend
+		this._medicineService.makeTransaction(transactionForms).subscribe(
+			(transactions) => {
+				if(transactions != null) {
+					this._notificationService.success('The store has been updated!');
+
+					// prepare for generate invoice
+					let medicines: Medicine[] = [];
+
+					// fill medicines
+					let i = 0;
+					this.selectedMedicines.forEach((selectedMedicine, index) => {
+
+						// get medicines to generate invoice
+						if(selectedMedicine.isSelected){
+							medicines[index] = new Medicine(
+								selectedMedicine.medicine.id,
+								selectedMedicine.medicine.name,
+								selectedMedicine.medicine.expirationDate,
+								selectedMedicine.medicine.unitPrice,
+								selectedMedicine.medicine.idProvider,
+								transactions[i].quantity,
+							);
+
+							// update selectedMedicine
+							selectedMedicine.medicine.quantity -= transactions[i++].quantity;
+						}
+					});
+
+					// generateInvoice
+					generateInvoice(medicines, this.totalPrice, this.user, 'Sales invoice');
+
+					// reinitialize
+					this.reinitialize();
+				}
+				else {
+					this._notificationService.danger('Aïe! an error has occurred');
+				}
+			},
+			(error) => {
+				this._notificationService.danger('Aïe! an error has occurred');
+				// console.error(error);
+			},
+			() => {
+				// turn the button's loader off
+				this.isSellLoading = false;
+			});
 	}
 
+
+	
+	edit(id: number){
+		this.router.navigateByUrl('medicine/edit/' + id);
+	}
 }

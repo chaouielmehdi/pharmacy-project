@@ -5,6 +5,9 @@ import { NotificationService } from 'app/services/notification.service';
 import { Medicine } from 'app/classes/Medicine';
 import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
 import { fade } from 'app/animations/fade';
+import { ProviderService } from 'app/services/provider.service';
+import { formatDate } from 'app/util/DateHandler';
+import { Provider } from 'app/classes/Provider';
 
 @Component({
 	selector: 'app-medicine-edit',
@@ -18,16 +21,19 @@ export class MedicineEditComponent implements OnInit {
 
 	constructor(
 		private fb: FormBuilder,
+		private router: Router,
 		private activatedRoute: ActivatedRoute,
 		private _medicineService: MedicineService,
 		private _notificationService: NotificationService,
-		private router: Router,
+		private _providerService: ProviderService,
 	) { }
 
 	ngOnInit() {
 		let id: string = this.activatedRoute.snapshot.paramMap.get('id');
 
 		this.getMedicine(id);
+
+		this.getAllProviders();
 	}
 
 
@@ -110,7 +116,7 @@ export class MedicineEditComponent implements OnInit {
 			expirationDate: new FormControl(
 
 				// default value
-				medicine.expirationDate,
+				formatDate('yyyy-mm-dd', medicine.expirationDate),
 
 				// validators
 				[
@@ -210,4 +216,38 @@ export class MedicineEditComponent implements OnInit {
 			});
 	}
 
+
+
+
+
+	/*
+	 * (non-doc)
+	 * --------------------------------------------------------------------------
+	 * providers
+	 * --------------------------------------------------------------------------
+	 */
+	
+	providers: Provider[] = [];
+	
+	getAllProviders(): void {
+		this._providerService.getAll().subscribe(
+			(providers) => {
+				if(providers != null) {
+					this.providers = providers;
+
+					this.providers.forEach((provider) => {
+						provider.contractDate = formatDate('Month dd, yyyy', provider.contractDate);
+					});
+					console.log(providers);
+					
+				}
+			},
+			(error) => {
+				this._notificationService.danger('Aïe! an error has occurred');
+				// console.error(error);
+			},
+			() => {
+				this.isPageLoading = false;
+			});
+	}
 }

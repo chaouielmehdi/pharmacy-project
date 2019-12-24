@@ -143,6 +143,6 @@ export const environment = {
 	 * --------------------------------------------------------------------------
 	 */
 
-	transactionBuyURL: 					transactionBaseURL+'/create',
+	transactionCreateURL: 				transactionBaseURL+'/create',
 
 }

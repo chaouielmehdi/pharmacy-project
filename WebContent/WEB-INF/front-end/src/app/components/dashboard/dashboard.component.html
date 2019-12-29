@@ -5,14 +5,15 @@
 				<div class="card card-stats">
 					<div class="card-header card-header-success card-header-icon">
 						<div class="card-icon">
-							<i class="fas fa-handshake"></i>
+							<i class="material-icons">store</i>
 						</div>
-						<p class="card-category">Providers</p>
-						<h3 class="card-title">3</h3>
+						<p class="card-category">Revenue (MAD)</p>
+						<h3 class="card-title">{{ statistic.revenue }}</h3>
 					</div>
 					<div class="card-footer">
 						<div class="stats" style="height: 20px;">
-							<a routerLink="/providers" style="position: absolute; right: 17px;">Show more</a>
+							<i *ngIf="isAdmin" class="material-icons">date_range</i> Last 24 Hours
+							<a *ngIf="isAdmin" routerLink="/dashboard" style="position: absolute; right: 17px;">Generate report</a>
 						</div>
 					</div>
 				</div>
@@ -21,15 +22,14 @@
 				<div class="card card-stats">
 					<div class="card-header card-header-warning card-header-icon">
 						<div class="card-icon">
-							<i class="material-icons">store</i>
+							<i class="fas fa-handshake"></i>
 						</div>
-						<p class="card-category">Revenue (MAD)</p>
-						<h3 class="card-title">3200</h3>
+						<p class="card-category">Providers</p>
+						<h3 class="card-title">{{ statistic.providersNumber }}</h3>
 					</div>
 					<div class="card-footer">
 						<div class="stats" style="height: 20px;">
-							<i class="material-icons">date_range</i> Last 24 Hours
-							<a routerLink="/providers" style="position: absolute; right: 17px;">Generate report</a>
+							<a *ngIf="isAdmin" routerLink="/providers" style="position: absolute; right: 17px;">Show more</a>
 						</div>
 					</div>
 				</div>
@@ -41,46 +41,45 @@
 							<i class="material-icons">info_outline</i>
 						</div>
 						<p class="card-category">Employees</p>
-						<h3 class="card-title">20</h3>
+						<h3 class="card-title">{{ statistic.usersNumber }}</h3>
 					</div>
 					<div class="card-footer">
 						<div class="stats" style="height: 20px;">
-							<a routerLink="/users" style="position: absolute; right: 17px;">Show more</a>
+							<a *ngIf="isAdmin" routerLink="/users" style="position: absolute; right: 17px;">Show more</a>
 						</div>
 					</div>
 				</div>
 			</div>
 		</div>
-		<div class="row">
-			<div class="col-md-6">
+		<div *ngIf="isAdmin" class="row">
+			<div class="col-md-12">
 				<div class="card card-chart">
 					<div class="card-header card-header-success">
 						<div class="ct-chart" id="dailySalesChart"></div>
 					</div>
 					<div class="card-body">
 						<h4 class="card-title">Daily Sales</h4>
-						<p class="card-category">
-							<span class="text-success"><i class="fa fa-long-arrow-up"></i> 55% </span> increase in today sales.</p>
 					</div>
 					<div class="card-footer">
 						<div class="stats">
-							<i class="material-icons">access_time</i> updated 4 minutes ago
+							<p class="card-category">
+								<span class="text-success"><i class="fa fa-long-arrow-up"></i> 55% </span> increase in today sales.
+							</p>
 						</div>
 					</div>
 				</div>
 			</div>
-			<div class="col-md-6">
+			<div class="col-md-12">
 				<div class="card card-chart">
 					<div class="card-header card-header-warning">
 						<div class="ct-chart" id="websiteViewsChart"></div>
 					</div>
 					<div class="card-body">
-						<h4 class="card-title">Email Subscriptions</h4>
-						<p class="card-category">Last Campaign Performance</p>
+						<h4 class="card-title">Purchases Per Providers</h4>
 					</div>
 					<div class="card-footer">
 						<div class="stats">
-							<i class="material-icons">access_time</i> campaign sent 2 days ago
+							<p class="card-category">Most Important Providers</p>
 						</div>
 					</div>
 				</div>
@@ -88,4 +87,3 @@
 		</div>
 	</div>
 </div>
-  

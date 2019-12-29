@@ -4,7 +4,6 @@ import { BrowserModule  } from '@angular/platform-browser';
 import { Routes, RouterModule } from '@angular/router';
 
 import { BeforeLoginGuard } from 'app/guards/before-login.guard';
-import { AfterLoginGuard } from 'app/guards/after-login.guard';
 import { UserEditComponent } from 'app/components/user/user-edit/user-edit.component';
 import { UserAddComponent } from 'app/components/user/user-add/user-add.component';
 import { UsersComponent } from 'app/components/user/users/users.component';
@@ -18,6 +17,7 @@ import { ProvidersComponent } from './components/provider/providers/providers.co
 import { MedicinesComponent } from './components/medicine/medicines/medicines.component';
 import { MedicineAddComponent } from './components/medicine/medicine-add/medicine-add.component';
 import { MedicineEditComponent } from './components/medicine/medicine-edit/medicine-edit.component';
+import { AfterLoginGuard } from './guards/after-login.guard';
 
 export const routes: Routes = [
 	{

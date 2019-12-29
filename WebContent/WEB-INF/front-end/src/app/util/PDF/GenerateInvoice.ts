@@ -1,8 +1,6 @@
-import { Transaction } from "app/classes/Transaction";
 import  * as jsPDF from 'jspdf';
 import { formatDate } from "../DateHandler";
 import { User } from "app/classes/User";
-import { Provider } from "app/classes/Provider";
 import { Medicine } from "app/classes/Medicine";
 
 /**
@@ -41,7 +39,7 @@ export function generateInvoice( medicines: Medicine[], total: number, user: Use
 	setText('left', 'd-block', 'p', 'black', 'normal', 'Invoice date         : ' + formatDate('Month dd, yyyy', new Date(), 0), true);
 	setText('left', 'd-block', 'p', 'black', 'normal', 'Employee name  : ' + user.firstName + ' ' + user.lastName, true);
 	setText('left', 'd-block', 'p', 'black', 'normal', 'Employee phone : ' + user.phone, true);
-	
+
 
 
 	// set invoice title

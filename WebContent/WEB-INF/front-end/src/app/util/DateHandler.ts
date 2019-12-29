@@ -11,7 +11,7 @@ export function formatDate(format: string, date: Date | string, daysToAdd: numbe
 	let monthNames = [
 		"January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December",
 	];
-
+	
 	let monthIndex	= new Date(date).getMonth()+1;
 	let year		= new Date(date).getFullYear();
 	let month		= monthIndex < 10 ?

@@ -4,6 +4,7 @@ import { Observable, of, BehaviorSubject } from 'rxjs';
 import { FormGroup } from '@angular/forms';
 import { catchError, tap } from 'rxjs/operators';
 import { TokenService } from './token.service';
+import { AdminTokenService } from './adminToken.service';
 import { Router } from '@angular/router';
 import { User } from 'app/classes/User';
 import { environment } from 'environments/environment';
@@ -16,7 +17,8 @@ export class UserService {
 	constructor(
 		private http: HttpClient,
 		private router: Router,
-		private _tokenService: TokenService
+		private _tokenService: TokenService,
+		private _adminTokenService: AdminTokenService,
 	) {
 		// get the connected user
 		this.getAndEmitConnectedUser();
@@ -82,7 +84,7 @@ export class UserService {
 
 	/**
 	 * Logins client side
-	 * @param user 
+	 * @param user
 	 */
 	loginClient(user: User): void {
 
@@ -130,6 +132,7 @@ export class UserService {
 	 */
 	logoutClient() {
 		this._tokenService.remove();
+		this._adminTokenService.remove();
 
 		this.changeAuthStatus$(false);
 		

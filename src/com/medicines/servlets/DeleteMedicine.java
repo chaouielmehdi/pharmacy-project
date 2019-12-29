@@ -26,8 +26,6 @@ public class DeleteMedicine extends HttpServlet {
 		// initialize parameter
 		String idString = request.getParameter("id");
 		
-		System.out.println("sdljkqnldqknflqkdnvc doDelete : " + idString);
-		
 		// validate parameter
 		if(!(idString == null || idString == "")) {
 	        // delete the medicine

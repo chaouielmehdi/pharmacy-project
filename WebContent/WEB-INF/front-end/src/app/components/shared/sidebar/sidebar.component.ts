@@ -32,23 +32,29 @@ export class SidebarComponent implements OnInit {
 	) { }
 
 	ngOnInit() {
-		// subscribe to the isUserConnected
-		this._userService.authStatus$.subscribe(
-			(status) => {
-				this.isUserConnected = status;
+		// Subscription to userEventEmitter
+		this._userService.userEventEmitter.subscribe((user) => {
+			this.user = user;
 
-				ROUTES = [
-					{ path: '/dashboard',	title: 'Dashboard',		isVisible: this.isUserConnected,	iconClass: 'material-icons',	icon: 'dashboard',	class: '' },
-					{ path: '/medicines',	title: 'Medicines',		isVisible: this.isUserConnected,	iconClass: 'fas fa-capsules',	icon: '',			class: '' },
-					{ path: '/users',		title: 'Employees',		isVisible: this.isUserConnected,	iconClass: 'material-icons',	icon: 'people_alt',	class: '' },
-					{ path: '/providers',	title: 'Providers',		isVisible: this.isUserConnected,	iconClass: 'fas fa-handshake',	icon: '',			class: '' },
-					{ path: '/profile',		title: 'My Profile',	isVisible: this.isUserConnected,	iconClass: 'material-icons',	icon: 'person',		class: '' },
-					{ path: '/login',		title: 'Login',			isVisible: !this.isUserConnected,	iconClass: 'material-icons',	icon: 'person',		class: '' },
-				];
-				
-				this.menuItems = ROUTES.filter(menuItem => menuItem);
-			}
-		);
+			// subscribe to the isUserConnected
+			this._userService.authStatus$.subscribe(
+				(status) => {
+					this.isUserConnected = status;
+
+					ROUTES = [
+						{ path: '/dashboard',	title: 'Dashboard',		isVisible: this.isUserConnected,		iconClass: 'material-icons',	icon: 'dashboard',	class: '' },
+						{ path: '/medicines',	title: 'Medicines',		isVisible: this.isUserConnected,		iconClass: 'fas fa-capsules',	icon: '',			class: '' },
+						{ path: '/users',		title: 'Employees',		isVisible: this.isUserConnected && this.user.type == 'admin',	iconClass: 'material-icons',	icon: 'people_alt',	class: '' },
+						{ path: '/providers',	title: 'Providers',		isVisible: this.isUserConnected && this.user.type == 'admin',	iconClass: 'fas fa-handshake',	icon: '',			class: '' },
+						{ path: '/profile',		title: 'My Profile',	isVisible: this.isUserConnected,		iconClass: 'material-icons',	icon: 'person',		class: '' },
+						{ path: '/login',		title: 'Login',			isVisible: !this.isUserConnected,		iconClass: 'material-icons',	icon: 'person',		class: '' },
+					];
+					
+					this.menuItems = ROUTES.filter(menuItem => menuItem);
+				}
+			);
+
+		});
 	}
 
 	

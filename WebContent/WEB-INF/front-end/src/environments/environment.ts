@@ -26,6 +26,9 @@ export const medicineBaseURL =					baseApiURL+'/medicines';
 // Transaction Base URL
 export const transactionBaseURL =				baseApiURL+'/transactions';
 
+// Statistic Base URL
+export const statisticBaseURL =					baseApiURL+'/statistic';
+
 
 
 
@@ -144,5 +147,18 @@ export const environment = {
 	 */
 
 	transactionCreateURL: 				transactionBaseURL+'/create',
+
+
+
+	
+	/*
+	 * (non-doc)
+	 * --------------------------------------------------------------------------
+	 * Statistic URLs
+	 * --------------------------------------------------------------------------
+	 */
+	
+	statisticGetURL: 					statisticBaseURL+'/get',
+
 
 }
